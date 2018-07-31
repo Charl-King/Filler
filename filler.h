@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/26 09:53:48 by cking             #+#    #+#             */
-/*   Updated: 2018/07/30 14:28:23 by cking            ###   ########.fr       */
+/*   Updated: 2018/07/31 16:57:36 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,14 @@ typedef struct s_piece
 	t_coord offset;
 	t_coord trim;
 } t_piece;
+
+typedef struct s_a
+{
+	t_player player;
+	t_board board;
+	t_piece piece;
+	t_coord opt;
+	t_coord *targets;
+	int i;
+	int counter;
+} s_a;

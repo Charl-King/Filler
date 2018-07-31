@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 08:11:01 by cking             #+#    #+#             */
-/*   Updated: 2018/07/31 10:47:53 by cking            ###   ########.fr       */
+/*   Updated: 2018/07/31 17:03:28 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,15 @@
 #include "filler.h"
 #include <stdio.h>
 
-void		error(int x)
+void		place(t_coord *coord)
 {
-	ft_putstr_fd("Error", 2);
-	ft_putnbr_fd(x, 2);
-	ft_putchar_fd('\n', 2);
-}
-
-void	put_coord(t_coord *coord)
-{
-	ft_putstr_fd("(", 2);
-	ft_putnbr_fd(coord->y, 2);
-	ft_putchar_fd(':', 2);
-	ft_putnbr_fd(coord->x, 2);
-	ft_putstr_fd(")\n", 2);
-}
-
-void    place (t_coord *coord)
-{
-    ft_putnbr(coord->y);
+	ft_putnbr(coord->y);
 	ft_putchar(' ');
 	ft_putnbr(coord->x);
 	ft_putchar('\n');
 }
 
-void	print_map(t_board *map)
-{
-	int i;
-
-	i = 0;
-	while (i < map->y)
-		ft_putendl_fd(map->data[i++], 2);
-}
-
-void	print_piece(t_piece *piece)
-{
-	int i;
-
-	i = 0;
-	while (i < piece->y)
-		ft_putendl_fd(piece->data[i++], 2);
-}
-
-void	clear_token(t_piece *token)
+void		clear_token(t_piece *token)
 {
 	int i;
 
@@ -66,7 +32,7 @@ void	clear_token(t_piece *token)
 	ft_memdel((void **)token->data);
 }
 
-void	set_board_size(t_board *map, char *str)
+void		set_board_size(t_board *map, char *str)
 {
 	map->y = ft_getnum_n(str, 1);
 	map->x = ft_getnum_n(str, 2);
@@ -74,14 +40,15 @@ void	set_board_size(t_board *map, char *str)
 
 t_player	init(void)
 {
-	char **line;
-	int player_num;
-	t_player player;
+	char		**line;
+	int			player_num;
+	char		*str;
+	t_player	player;
 
 	line = malloc(1000);
 	*line = malloc(1000);
 	get_next_line(0, line);
-	char *str = ft_strchr(*line, 'p');
+	str = ft_strchr(*line, 'p');
 	str++;
 	player_num = ft_atoi(str);
 	if (player_num == 1)
@@ -99,15 +66,14 @@ t_player	init(void)
 	return (player);
 }
 
-t_board	init_board(t_player *player)
+t_board		init_board(t_player *player)
 {
-	t_board map;
-	char **line;
-	map.player = *player;
+	t_board		map;
+	char		**line;
 
+	map.player = *player;
 	line = malloc(1000);
 	*line = malloc(1000);
-	
 	get_next_line(0, line);
 	set_board_size(&map, *line);
 	ft_memdel((void *)line);
@@ -116,20 +82,18 @@ t_board	init_board(t_player *player)
 	return (map);
 }
 
-void	update_board(t_board *board)
+void		update_board(t_board *board)
 {
-	int i;
-	char **line;
-	char *temp;
+	int		i;
+	char	**line;
+	char	*temp;
 
 	line = malloc(1000);
 	*line = malloc(1000);
 	i = 0;
-
 	get_next_line(0, line);
-	if (ft_strncmp(*line,"Plateau", 6) == 0)
+	if (ft_strncmp(*line, "Plateau", 6) == 0)
 		get_next_line(0, line);
-	
 	while (i < board->y)
 	{
 		get_next_line(0, line);
@@ -142,13 +106,13 @@ void	update_board(t_board *board)
 	ft_memdel((void *)*line);
 }
 
-t_piece	get_piece()
+t_piece		get_piece(void)
 {
-	int i;
-	char **line;
-	char *str;
-	t_piece piece;
-	
+	int		i;
+	char	**line;
+	char	*str;
+	t_piece	piece;
+
 	i = 0;
 	line = malloc(1000);
 	*line = malloc(1000);
@@ -168,81 +132,70 @@ t_piece	get_piece()
 	return (piece);
 }
 
-int		check_placement(t_board *board, t_piece *piece, t_coord *coord)
+int			check_placement(t_board *brd, t_piece *piece, t_coord *crd)
 {
 	int i;
 	int j;
-	int overlap;
+	int ovl;
 
 	i = 0;
-	j = 0;
-	overlap = 0;
-
-	if ((piece->trim.y - piece->offset.y + coord->y) >= board->y)
-		return (0);
-	if ((piece->trim.x - piece->offset.x + coord->x) >= board->x)
+	ovl = 0;
+	if (((piece->trim.y - piece->offset.y + crd->y) >= brd->y)
+		|| ((piece->trim.x - piece->offset.x + crd->x) >= brd->x))
 		return (0);
 	while (i <= (piece->trim.y - piece->offset.y))
 	{
+		j = 0;
 		while (j <= (piece->trim.x - piece->offset.x))
 		{
 			if ((piece->data[piece->offset.y + i][piece->offset.x + j]) == '*')
 			{
-				if (board->data[coord->y + i][coord->x + j] == board->player.me)
-					overlap++;
-				if (board->data[coord->y + i][coord->x + j] == board->player.enemy)
+				(brd->data[crd->y + i][crd->x + j] == brd->player.me) && ovl++;
+				if (brd->data[crd->y + i][crd->x + j] == brd->player.enemy)
 					return (0);
 			}
 			j++;
 		}
-		j = 0;
 		i++;
 	}
-	return (overlap == 1 ? 1 : 0);
+	return (ovl == 1 ? 1 : 0);
 }
 
-void	trim(t_piece *piece)
+void		trim(t_piece *piece)
 {
 	int i;
 	int j;
 
 	i = 0;
-	j = 0;
 	piece->offset.x = piece->x;
 	piece->offset.y = piece->y;
 	piece->trim.x = 0;
 	piece->trim.y = 0;
-
 	while (i < piece->y)
 	{
+		j = 0;
 		while (j < piece->x)
 		{
 			if (piece->data[i][j] == '*')
 			{
-				if (i < piece->offset.y)
-					piece->offset.y = i;
-				if (i > piece->trim.y)
-					piece->trim.y = i;
-				if (j < piece->offset.x)
-					piece->offset.x = j;
-				if (j > piece->trim.x)
-					piece->trim.x = j;
+				(i < piece->offset.y) && (piece->offset.y = i);
+				(i > piece->trim.y) && (piece->trim.y = i);
+				(j < piece->offset.x) && (piece->offset.x = j);
+				(j > piece->trim.x) && (piece->trim.x = j);
 			}
 			j++;
 		}
-		j = 0;
 		i++;
 	}
 }
 
-int		distance(t_coord *a, t_coord *b)
+int			distance(t_coord *a, t_coord *b)
 {
 	int x;
 	int y;
 
 	x = a->x - b->x;
 	y = a->y - b->y;
-
 	if (x < 0)
 		x *= -1;
 	if (y < 0)
@@ -250,75 +203,84 @@ int		distance(t_coord *a, t_coord *b)
 	return (x + y);
 }
 
-t_coord get_placement(t_board *map, t_piece *token, t_coord *target)
+t_coord		get_placement(t_board *map, t_piece *token, t_coord *target)
 {
-	int i;
-	int j;
-	t_coord coord;
-	int dist;
-	t_coord out;
+	t_coord	coord;
+	int		dist;
+	t_coord	out;
 
-	i = 0;
-	j = 0;
+	coord.y = -1;
 	dist = map->y + map->x;
 	out.x = -999;
-	out.y = -999;
-
-	while (i < map->y)
+	while (coord.y++ < map->y)
 	{
-		while (j < map->x)
+		coord.x = -1;
+		while (coord.x++ < map->x)
 		{
-			coord.y = i;
-			coord.x = j;
 			if (check_placement(map, token, &coord))
 			{
 				if (distance(&coord, target) < dist)
 				{
-					dist = distance (&coord, target);
-					out.y = i - token->offset.y;
-					out.x = j - token->offset.x;
+					dist = distance(&coord, target);
+					out.y = coord.y - token->offset.y;
+					out.x = coord.x - token->offset.x;
 				}
 			}
-			j++;
 		}
-		j = 0;
-		i++;
 	}
 	return (out);
 }
 
-t_coord *set_targets(t_board *map)
+void	set_targets(t_board *board, t_coord *targets)
 {
-	t_coord target[8];
-
-	return (target);
+	targets[0].y = -5;
+	targets[0].x = board->x / 5;
+	targets[1].y = board->y / 2;
+	targets[1].x = board->x / 2;
+	targets[2].y = board->y;
+	targets[2].x = board->x;
+	targets[3].y = board->y / 3;
+	targets[3].x = 5;
+	targets[4].y = board->y;
+	targets[4].x = -10;
+	targets[5].y = board->y / 3;
+	targets[5].x = board->x;
+	targets[6].y = 5;
+	targets[6].x = board->x / 3 * 2;
+	targets[7].y = board->y / 2;
+	targets[7].x = board->x / 2;
 }
 
 int		main(void)
 {
-	t_player player = init();
-	t_board board = init_board(&player);
-	t_piece piece;
-	t_coord opt;
-	t_coord target;
+	s_a			a;
 
-	target.y = board.y/3;
-	target.x = 2;
-
+	a.i = 0;
+	a.counter = 0;
+	a.player = init();
+	a.board = init_board(&a.player);
+	a.targets = (t_coord *)malloc(sizeof(t_coord) * 8);
+	set_targets(&a.board, a.targets);
 	while (1)
 	{
-		update_board(&board);
-		piece = get_piece();
-		trim(&piece);
-		opt = (get_placement(&board, &piece, &target));
-		clear_token(&piece);
-		if(opt.x != -999)
-			place(&opt);
+		update_board(&a.board);
+		a.piece = get_piece();
+		trim(&a.piece);
+		a.opt = (get_placement(&a.board, &a.piece, &a.targets[a.i]));
+		clear_token(&a.piece);
+		if (a.opt.x != -999)
+			place(&a.opt);
 		else
-		{	
+		{
 			write(1, "0 0", 3);
 			exit(1);
 		}
+		if (a.counter++ >= a.board.y + 20)
+		{
+			a.counter = 0;
+			a.i++;
+		}
+		if (a.i == 8)
+			a.i = 1;
 	}
-	return (0);
 }
