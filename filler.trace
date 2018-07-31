@@ -1,4 +1,5 @@
-seed = 4576
+seed = 63
+O: error on input
 ./resources/players/anything.filler won
 Score:
-87AGAINST80
+85AGAINST84
