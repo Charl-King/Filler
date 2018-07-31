@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Filler2.c                                          :+:      :+:    :+:   */
+/*   filler.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/23 12:46:49 by cking             #+#    #+#             */
-/*   Updated: 2018/07/30 14:35:40 by cking            ###   ########.fr       */
+/*   Created: 2018/07/31 08:11:01 by cking             #+#    #+#             */
+/*   Updated: 2018/07/31 10:47:53 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,16 @@ t_piece	get_piece()
 {
 	int i;
 	char **line;
+	char *str;
 	t_piece piece;
 	
 	i = 0;
 	line = malloc(1000);
 	*line = malloc(1000);
 	get_next_line(0, line);
-	piece.y = ft_getnum_n(*line, 1);
-	piece.x = ft_getnum_n(*line, 2);
+	str = (ft_strchr(*line, ' ') + 1);
+	piece.y = ft_atoi(str);
+	piece.x = ft_atoi(ft_strchr(str, ' ') + 1);
 	piece.data = (char **)malloc(sizeof(char *) * piece.y);
 	while (i < piece.y)
 	{
@@ -248,78 +250,75 @@ int		distance(t_coord *a, t_coord *b)
 	return (x + y);
 }
 
-//t_coord get_placement(t_board map, t_piece token, t_coord target)
-//{
-//	
-//}
+t_coord get_placement(t_board *map, t_piece *token, t_coord *target)
+{
+	int i;
+	int j;
+	t_coord coord;
+	int dist;
+	t_coord out;
+
+	i = 0;
+	j = 0;
+	dist = map->y + map->x;
+	out.x = -999;
+	out.y = -999;
+
+	while (i < map->y)
+	{
+		while (j < map->x)
+		{
+			coord.y = i;
+			coord.x = j;
+			if (check_placement(map, token, &coord))
+			{
+				if (distance(&coord, target) < dist)
+				{
+					dist = distance (&coord, target);
+					out.y = i - token->offset.y;
+					out.x = j - token->offset.x;
+				}
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return (out);
+}
+
+t_coord *set_targets(t_board *map)
+{
+	t_coord target[8];
+
+	return (target);
+}
 
 int		main(void)
 {
 	t_player player = init();
 	t_board board = init_board(&player);
 	t_piece piece;
-	t_coord coord;
 	t_coord opt;
-	t_coord target[6];
-	int inc = 0;
+	t_coord target;
+
+	target.y = board.y/3;
+	target.x = 2;
 
 	while (1)
 	{
-		int i = 0;
-		int j = 0;
-		coord.x = 0;
-		coord.y = 0;
-		opt.x = 0;
-		opt.y = 0;
-		int mindis = board.x + board.y;
-		int found = 0;
-
 		update_board(&board);
-		target[0].y = board.y/3;
-		target[0].x = 2;
-		target[1].y = board.y/3;
-		target[1].x = board.x-2;
-		target[2].y = 2;
-		target[2].x = 2;
-		target[3].y = board.y-2;
-		target[3].x = board.x-2;
-		target[4].y = board.y-2;
-		target[4].x = 2;
-		target[5].y = 2;
-		target[5].x = board.x - 2;
-		target[6].y = board.y - 2;
-		target[6].x = 2;
 		piece = get_piece();
 		trim(&piece);
-		while (i < board.y)
-		{
-			while (j < board.x)
-			{
-				coord.y = i;
-				coord.x = j;
-				if (check_placement(&board, &piece, &coord) && distance(&coord,&target[inc]) < mindis)
-				{
-					opt.y = i - piece.offset.y;
-					opt.x = j - piece.offset.x;
-					mindis = distance(&coord, &target[inc]);
-					found = 1;
-				}
-				j++;
-			}
-			j = 0;
-			i++;
-		}
-		if (mindis < 5 && inc < 6)
-			inc++;
-		mindis = 0;
+		opt = (get_placement(&board, &piece, &target));
 		clear_token(&piece);
-		if (found)
+		if(opt.x != -999)
 			place(&opt);
 		else
-		{
-			write(1, "1 1", 3);
+		{	
+			write(1, "0 0", 3);
 			exit(1);
-		}	
+		}
 	}
 	return (0);
 }
