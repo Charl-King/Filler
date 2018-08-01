@@ -6,7 +6,7 @@
 #    By: cking <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/04 07:59:03 by cking             #+#    #+#              #
-#    Updated: 2018/07/23 12:45:24 by cking            ###   ########.fr        #
+#    Updated: 2018/07/31 18:29:26 by cking            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC=ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
     ft_strsub.c ft_strjoin.c ft_strtrim.c ft_strsplit.c ft_itoa.c ft_putchar.c \
     ft_putstr.c ft_putendl.c ft_putnbr.c ft_putchar_fd.c ft_putstr_fd.c \
     ft_putendl_fd.c ft_putnbr_fd.c ft_isspace.c ft_isupper.c ft_intlen.c \
-	ft_strlcat.c ft_strdel.c ft_strnew.c ft_islower.c ft_getnum_n.c \
+	ft_strlcat.c ft_strdel.c ft_strnew.c ft_islower.c \
 	get_next_line.c
 
 OBJ=$(SRC:.c=.o)

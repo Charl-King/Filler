@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 08:11:01 by cking             #+#    #+#             */
-/*   Updated: 2018/07/31 18:16:58 by cking            ###   ########.fr       */
+/*   Updated: 2018/08/01 09:56:08 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,37 @@
 
 void	set_targets(t_board *board, t_coord *targets)
 {
-	targets[0].y = -5;
-	targets[0].x = board->x / 5;
-	targets[1].y = board->y / 2;
-	targets[1].x = board->x / 2;
-	targets[2].y = board->y;
-	targets[2].x = board->x;
-	targets[3].y = board->y / 3;
-	targets[3].x = 5;
-	targets[4].y = board->y;
-	targets[4].x = -10;
-	targets[5].y = board->y / 3;
-	targets[5].x = board->x;
-	targets[6].y = 5;
-	targets[6].x = board->x / 3 * 2;
-	targets[7].y = board->y / 2;
-	targets[7].x = board->x / 2;
+	targets[0].y = board->y;
+	targets[0].x = 0;
+	targets[1].y = board->y / 3;
+	targets[1].x = 0;
+	targets[2].y = board->y / 2;
+	targets[2].x = board->x / 2;
+	targets[3].y = 0;
+	targets[3].x = board->x / 3 * 2;
+	targets[4].y = board->y / 3;
+	targets[4].x = board->x;
+	targets[5].y = board->y;
+	targets[5].x = board->x / 3 * 2;
+	targets[6].y = board->y / 3 * 2;
+	targets[6].x = board->x;
+	targets[7].y = 0;
+	targets[7].x = board->x / 3;
 }
 
-void	norm(t_a a)
+void	norm(t_a *a)
 {
-	if (a.opt.x != -999)
-		place(&a.opt);
+	if (a->opt.x != -999)
+		place(&a->opt);
 	else
 		exit(1);
-	if (a.counter++ >= a.board.y + 20)
+	if (a->counter++ >= 20)
 	{
-		a.counter = 0;
-		a.i++;
+		a->counter = 0;
+		a->i++;
 	}
-	if (a.i == 8)
-		a.i = 1;
+	if (a->i == 8)
+		a->i = 0;
 }
 
 int		main(void)
@@ -66,6 +66,6 @@ int		main(void)
 		trim(&a.piece);
 		a.opt = (get_placement(&a.board, &a.piece, &a.targets[a.i]));
 		clear_token(&a.piece);
-		norm(a);
+		norm(&a);
 	}
 }

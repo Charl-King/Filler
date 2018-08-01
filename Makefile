@@ -6,10 +6,9 @@
 #    By: cking <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/31 18:23:40 by cking             #+#    #+#              #
-#    Updated: 2018/07/31 18:25:04 by cking            ###   ########.fr        #
+#    Updated: 2018/08/01 08:23:01 by cking            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME=filler.a
 
@@ -23,7 +22,7 @@ LDFLAGS=-L.
 
 LDLIBS=-lft
 
-SRC=filler.c placement.c readmap.c readtoken.c
+SRC=placement.c readmap.c readtoken.c
 
 OBJ=$(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:03:16 by cking             #+#    #+#             */
-/*   Updated: 2018/07/23 12:33:31 by cking            ###   ########.fr       */
+/*   Updated: 2018/08/01 09:58:41 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int					ft_toupper(int c);
 int					ft_isspace(int c);
 int					ft_isupper(int c);
 int					ft_islower(int c);
-int					ft_getnum_n(char *str, int n);
 
 #endif
 
@@ -81,6 +80,6 @@ int					ft_getnum_n(char *str, int n);
 
 # define BUFF_SIZE 1
 
-int		get_next_line(const int fd, char **line);
+int					get_next_line(const int fd, char **line);
 
 #endif

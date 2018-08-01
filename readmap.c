@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 17:46:00 by cking             #+#    #+#             */
-/*   Updated: 2018/07/31 18:01:06 by cking            ###   ########.fr       */
+/*   Updated: 2018/07/31 18:32:21 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void		set_board_size(t_board *map, char *str)
 {
-	map->y = ft_getnum_n(str, 1);
-	map->x = ft_getnum_n(str, 2);
+	char *temp;
+
+	temp = (ft_strchr(str, ' ') + 1);
+	map->y = ft_atoi(temp);
+	map->x = ft_atoi(ft_strchr(temp, ' ') + 1);
 }
 
 t_player	init(void)

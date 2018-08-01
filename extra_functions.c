@@ -6,7 +6,7 @@
 /*   By: cking <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 15:19:16 by cking             #+#    #+#             */
-/*   Updated: 2018/07/31 15:22:29 by cking            ###   ########.fr       */
+/*   Updated: 2018/08/01 09:57:26 by cking            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,3 @@ void	print_piece(t_piece *piece)
 	while (i < piece->y)
 		ft_putendl_fd(piece->data[i++], 2);
 }
-
